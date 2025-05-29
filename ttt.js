@@ -6,6 +6,7 @@ const gameBoard = (function () {
                  ' ', ' ', ' '];
     const addMark = (mark, location) => {
             board.splice(location, 1, mark);
+            console.log(board);
         }
     
     return { addMark, board};
@@ -20,21 +21,17 @@ const game = (function () {
     let round = 0;
     const playTurn = () => {
         if (round % 2 === 0) {
-            location = prompt('Where do you want to put your X?');
             if (gameBoard.board.at(location) === ' ') {
             gameBoard.addMark('X', location);
             ++round;
             } else {
-                alert('Not an open spot. Try again');
                 playTurn()
             }
         } else {
-            location = prompt('Where do you want to put your O');
             if (gameBoard.board.at(location) === ' ') {
                 gameBoard.addMark('X', location);
                 ++round;
                 } else {
-                    alert('Not an open spot. Try again');
                     playTurn()
                 }
         }
@@ -68,11 +65,34 @@ const game = (function () {
     const playGame = () => {
         while (gameStatus === undefined) {
             console.log(gameBoard.board);
-            playTurn();
             const winner = checkGame();
         }
         alert('Winner is ', winner, "'s")
     }
+    return { playGame, checkGame, playTurn, round, gameStatus };
+})();
+
+
+const playGameButton = document.querySelector('.playGame');
+playGameButton.addEventListener('click', () => {
+    playGameButton.textContent = 'Restart';
+    game.playGame
 })
 
-game.playGame();
+const gameSquares = document.querySelectorAll('.gameSquare');
+
+for (square of gameSquares) {
+    square.addEventListener('click', function() {
+        if (!(this.textContent == 'X' || this.textContent == 'O')) {
+            if (game.round % 2 === 0) {
+                this.textContent = 'X';
+                gameBoard.addMark('X', +this.id);
+                ++game.round;
+            } else {
+                this.textContent = 'O'
+                gameBoard.addMark('O', +this.id);
+                ++game.round;
+            }
+        }
+    })
+}
