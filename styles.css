@@ -11,13 +11,21 @@ body {
     align-items: center;
 }
 
+.ticTacToeHead {
+    font-size: 3rem;
+    padding: 0px;
+    margin: 0px;
+}
+
 .gameBoard {
     display: grid;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-    width: 600px;
-    height: 600px;
+    width: 500px;
+    height: 500px;
+    border: 1px solid black;
 
 }
+
 
 .gameSquare {
     border: 1px solid black;
@@ -29,6 +37,9 @@ body {
 .action {
     background-color: green;
     color: white;
+    font-size: 1rem;
+    border-radius: 1.5rem;
+    padding: 1rem;
 
 }
 
@@ -37,4 +48,39 @@ body {
     display: flex;
     justify-content: space-between;
     /*gap: 10rem;*/
+}
+
+.player {
+    border: 2px solid black;
+    border-radius: 0.75rem;
+    padding: 1rem;
+}
+
+.nameForm {
+    display: grid;
+    grid-template: repeat(2, 1fr) / repeat(2, 1fr);
+    row-gap: 1rem;
+    column-gap: 0.5rem;
+    margin-top: 1rem;
+
+}
+
+.name1 {
+    grid-row: 1 / 2;
+}
+
+.name2 {
+    grid-row: 2 / 3;
+}
+
+.label {
+    grid-column: 1 / 2;
+}
+
+.input {
+    grid-column: 2 / 3;
+}
+
+.dialogHead {
+    font-weight: 700;
 }

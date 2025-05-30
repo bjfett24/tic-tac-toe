@@ -117,8 +117,7 @@ const game = (function () {
 
         const playerO = players.getPlayerO();
 
-        playerX.style.color = 'blue';
-        playerO.style.color = 'grey';
+        players.switchTurn();
         
 
 
@@ -166,10 +165,98 @@ function resetGame() {
 
 const players = (function() {
     const players = document.querySelector('.players');
-    const playerX = document.querySelector('.playerX');
+    const playerX = document.querySelector('.player.X');
+    const playerO = document.querySelector('.player.O');
 
+    playerX.style.fontSize = '2rem';
+    playerO.style.fontSize = '2rem';
 
-    const playerO = document.querySelector('.playerO');
+    const changePlayerNames = (name1, name2) => {
+        playerX.textContent = name1;
+        playerO.textContent = name2;
+    }
+
+    const newPlayerNameDialog = () => {
+        const popUp = document.createElement('dialog');
+        popUp.classList.add('popUp');
+        document.body.appendChild(popUp);
+    
+        const dialogContainer = document.createElement('div');
+        dialogContainer.classList.add('dialogContainer');
+        popUp.appendChild(dialogContainer);
+    
+        const dialogHead = document.createElement('div');
+        dialogHead.classList.add('dialogHead');
+        dialogHead.textContent = 'Change Names';
+        dialogContainer.appendChild(dialogHead);
+    
+        const nameForm = document.createElement('form');
+        nameForm.classList.add('nameForm');
+        nameForm.action = '#';
+        nameForm.method = 'dialog';
+        dialogContainer.appendChild(nameForm);
+    
+        const name1Label = document.createElement('label');
+        name1Label.classList.add('name1', 'label');
+        name1Label.for = 'name1';
+        name1Label.textContent = 'Rename Player 1';
+        nameForm.appendChild(name1Label);
+    
+        const name1Input = document.createElement('input');
+        name1Input.classList.add('name1', 'input');
+        name1Input.type = 'text';
+        name1Input.id = 'name1';
+        nameForm.appendChild(name1Input);
+    
+        const name2Label = document.createElement('label');
+        name2Label.classList.add('name2', 'label');
+        name2Label.for = 'name2';
+        name2Label.textContent = 'Rename Player 2';
+        nameForm.appendChild(name2Label);
+    
+        const name2Input = document.createElement('input');
+        name2Input.classList.add('name2', 'input');
+        name2Input.type = 'text';
+        name2Input.id = 'name2';
+        nameForm.appendChild(name2Input);
+    
+        const doneButton = document.createElement('button');
+        doneButton.type = 'submit';
+        doneButton.classList.add('doneButton')
+        doneButton.textContent = 'Done';
+        nameForm.appendChild(doneButton);
+    
+        nameForm.addEventListener('submit', function() {
+    
+            if (name1Input.value.length > 0 && name2Input.value.length > 0) {
+                popUp.close(); // Close the dialog
+                changePlayerNames(name1Input.value, name2Input.value);
+                
+             
+            } else {
+                const messageBox = document.createElement('div');
+                messageBox.style.cssText = `
+                    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+                    background-color: #ffdddd; color: #d8000c; padding: 10px 20px;
+                    border: 1px solid #d8000c; border-radius: 5px; z-index: 1001;
+                    font-family: sans-serif;
+                `;
+                messageBox.textContent = 'New name must have a length of 1 or more.';
+                document.body.appendChild(messageBox);
+                setTimeout(() => {
+                    messageBox.remove();
+                }, 3000); // Remove after 3 seconds
+            }
+        })
+    
+        popUp.showModal();
+    
+    }
+
+    const bothPlayers = document.querySelectorAll('.player');
+    for (p of bothPlayers) {
+        p.addEventListener('click', newPlayerNameDialog);
+    }
 
     const getPlayerX = () => playerX;
 
@@ -177,26 +264,28 @@ const players = (function() {
     
     const switchTurn = () => {
             if (game.getRound() % 2 == 0) {
-                playerX.style.color = 'blue';
-                playerO.style.color = 'grey';
+                playerX.style.backgroundColor = 'blue'
+                playerX.style.color = 'white';
+                playerO.style.backgroundColor = 'grey'
+                playerO.style.color = 'white';
             } else {
-                playerX.style.color = 'grey';
-                playerO.style.color = 'blue';
+                playerX.style.backgroundColor = 'grey'
+                playerX.style.color = 'white';
+                playerO.style.backgroundColor = 'blue'
+                playerO.style.color = 'white';
             }
         }
 
     const resetPlayerColor = () => {
         playerX.style.color = 'black';
         playerO.style.color = 'black';
+        playerX.style.backgroundColor = 'white';
+        playerO.style.backgroundColor = 'white';
     }
 
-    return { getPlayerX, getPlayerO, switchTurn, resetPlayerColor };
-
-    
-
+    return { getPlayerX, getPlayerO, switchTurn, resetPlayerColor, newPlayerNameDialog};
 
 
 })();
-
 
     
