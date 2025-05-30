@@ -1,6 +1,8 @@
 //Gameboard is an array that is stored inside a Gameboard object
 const heading = document.querySelector('.ticTacToeHead');
 
+
+
 function gameSquareAction() {
         const playerXName = players.getPlayerNames().at(0);
         const playerOName = players.getPlayerNames().at(1);
@@ -73,6 +75,32 @@ const game = (function () {
     const gameSquares = document.querySelectorAll('.gameSquare');
     let round = 0;
 
+    const resetGame = () => {
+        playGameButton.textContent = 'Play Game';
+        playGameButton.style.backgroundColor = 'rgb(13, 71, 13)';
+        heading.textContent = 'Tic Tac Toe';
+        heading.style.color = 'antiquewhite';
+        heading.style.backgroundColor = 'rgb(13, 71, 13)';
+        heading.style.border = '5px solid black'
+        
+        players.resetPlayerColor()
+    
+        
+    
+        for (square of gameSquares) {
+            square.removeEventListener('click', gameSquareAction);
+            square.removeEventListener('mouseenter', gameSquareEnter);
+            square.removeEventListener('mouseleave', gameSquareLeave);
+        }
+    
+        toggleGameStatus();
+        for (square of gameSquares) {
+            square.textContent = '';
+        }    
+        
+    
+    }
+
     const toggleGameStatus = () => {
         if (gameStatus === undefined) {
             gameStatus = true;
@@ -122,6 +150,16 @@ const game = (function () {
                 return 'Draw'
             } else {return undefined}
     }
+
+    const gameSquareEnter = function() {
+        if (gameStatus === undefined && !(this.textContent === '❌' || this.textContent === '⭕️')) {
+            this.classList.add('hover-effect');
+        }
+    }
+    
+    const gameSquareLeave = function() {
+        this.classList.remove('hover-effect');
+    }
     const playGame = () => {
         playGameButton.textContent = 'Reset';
         playGameButton.style.backgroundColor = 'red'
@@ -135,11 +173,13 @@ const game = (function () {
 
 
         for (square of gameSquares) {
+            square.addEventListener('mouseenter', gameSquareEnter);
+            square.addEventListener('mouseleave', gameSquareLeave);
             square.addEventListener('click', gameSquareAction);
 
         }
     }
-    return { playGame, checkGame, gameSquares, toggleGameStatus, getGameStatus, resetRounds, getRound, incRound};
+    return { playGame, checkGame, gameSquares, toggleGameStatus, getGameStatus, resetRounds, getRound, incRound, resetGame};
 })();
 
 
@@ -150,33 +190,11 @@ playGameButton.addEventListener('click', function() {
         gameBoard.resetBoard();
         game.playGame()
     } else {
-        resetGame()
+        game.resetGame()
     }
 });
 
-function resetGame() {
-    playGameButton.textContent = 'Play Game';
-    playGameButton.style.backgroundColor = 'rgb(13, 71, 13)';
-    heading.textContent = 'Tic Tac Toe';
-    heading.style.color = 'antiquewhite';
-    heading.style.backgroundColor = 'rgb(13, 71, 13)';
-    heading.style.border = '5px solid black'
-    
-    players.resetPlayerColor()
 
-    
-
-    for (square of game.gameSquares) {
-        square.removeEventListener('click', gameSquareAction);
-    }
-
-    game.toggleGameStatus();
-    for (square of game.gameSquares) {
-        square.textContent = '';
-    }    
-    
-
-}
 
 const players = (function() {
     const players = document.querySelector('.players');

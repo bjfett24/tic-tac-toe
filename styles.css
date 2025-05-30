@@ -49,6 +49,10 @@ body {
     background-color: rgb(13, 71, 13);
 }
 
+.gameSquare.hover-effect {
+    background-color: green !important;
+}
+
 .action {
     background-color: rgb(107, 164, 107);
     color: white;
@@ -115,3 +119,7 @@ button:hover {
 .doneButton {
     background-color: rgb(107, 164, 107);
 }
+
+/*.gameSquare:hover {
+    background-color: green;
+}*/
