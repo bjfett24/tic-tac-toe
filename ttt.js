@@ -2,16 +2,18 @@
 const heading = document.querySelector('.ticTacToeHead');
 
 function gameSquareAction() {
+        const playerXName = players.getPlayerNames().at(0);
+        const playerOName = players.getPlayerNames().at(1);
         if (game.getGameStatus() === undefined) {
-            if (!(this.textContent == 'X' || this.textContent == 'O')) {
+            if (!(this.textContent == '❌' || this.textContent == '⭕️')) {
                 if (game.getRound() % 2 === 0) {
-                    this.textContent = 'X';
+                    this.textContent = '❌';
                     gameBoard.addMark('X', +this.id);
                     game.incRound();
                     players.switchTurn();
 
                 } else {
-                    this.textContent = 'O'
+                    this.textContent = '⭕️'
                     gameBoard.addMark('O', +this.id);
                     game.incRound();
                     players.switchTurn();
@@ -19,8 +21,19 @@ function gameSquareAction() {
             }
             let winner = game.checkGame()
             if (winner != undefined) {
-                heading.textContent = `${winner}'s Won!`;
-                heading.style.color = 'blue';
+                if (winner === 'X') {
+                    heading.textContent = `${playerXName} Won!`;
+                } else if (winner === 'O') {
+                    heading.textContent = `${playerOName} Won!`;
+                } else {
+                    heading.textContent = 'Draw!';
+                }
+                heading.style.color = 'gold';
+                heading.style.backgroundColor = 'rgb(13, 71, 13)';
+                heading.style.border = '5px solid gold';
+                heading.style.borderRadius = '30px';
+                heading.style.boxShadow = '4px 8px 12px 5px rgb(0, 0, 0, 0.15)'
+                heading.style.padding = '1rem';
                 players.resetPlayerColor();
             }
         }
@@ -143,9 +156,11 @@ playGameButton.addEventListener('click', function() {
 
 function resetGame() {
     playGameButton.textContent = 'Play Game';
-    playGameButton.style.backgroundColor = 'green';
+    playGameButton.style.backgroundColor = 'rgb(13, 71, 13)';
     heading.textContent = 'Tic Tac Toe';
-    heading.style.color = 'black';
+    heading.style.color = 'antiquewhite';
+    heading.style.backgroundColor = 'rgb(13, 71, 13)';
+    heading.style.border = '5px solid black'
     
     players.resetPlayerColor()
 
@@ -175,6 +190,8 @@ const players = (function() {
         playerX.textContent = name1;
         playerO.textContent = name2;
     }
+
+    const getPlayerNames = () => [playerX.textContent, playerO.textContent];
 
     const newPlayerNameDialog = () => {
         const popUp = document.createElement('dialog');
@@ -264,26 +281,26 @@ const players = (function() {
     
     const switchTurn = () => {
             if (game.getRound() % 2 == 0) {
-                playerX.style.backgroundColor = 'blue'
-                playerX.style.color = 'white';
+                playerX.style.backgroundColor = 'gold'
+                playerX.style.color = 'rgb(13, 71, 13)';
                 playerO.style.backgroundColor = 'grey'
                 playerO.style.color = 'white';
             } else {
                 playerX.style.backgroundColor = 'grey'
                 playerX.style.color = 'white';
-                playerO.style.backgroundColor = 'blue'
-                playerO.style.color = 'white';
+                playerO.style.backgroundColor = 'gold'
+                playerO.style.color = 'rgb(13, 71, 13)';
             }
         }
 
     const resetPlayerColor = () => {
-        playerX.style.color = 'black';
-        playerO.style.color = 'black';
-        playerX.style.backgroundColor = 'white';
-        playerO.style.backgroundColor = 'white';
+        playerX.style.color = 'white';
+        playerO.style.color = 'white';
+        playerX.style.backgroundColor = 'black';
+        playerO.style.backgroundColor = 'black';
     }
 
-    return { getPlayerX, getPlayerO, switchTurn, resetPlayerColor, newPlayerNameDialog};
+    return { getPlayerX, getPlayerO, switchTurn, resetPlayerColor, newPlayerNameDialog, getPlayerNames};
 
 
 })();

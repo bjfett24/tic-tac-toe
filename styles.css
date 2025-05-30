@@ -9,12 +9,18 @@ body {
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    background-color: rgb(184, 213, 146);
 }
 
 .ticTacToeHead {
     font-size: 3rem;
     padding: 0px;
     margin: 0px;
+    background-color: rgb(13, 71, 13);
+    border: 5px solid rgb(0, 0, 0);
+    border-radius: 30px;
+    padding: 1rem;
+    color: antiquewhite;
 }
 
 .gameBoard {
@@ -22,20 +28,29 @@ body {
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
     width: 500px;
     height: 500px;
-    border: 1px solid black;
+    border: 5px solid black;
 
 }
 
 
 .gameSquare {
-    border: 1px solid black;
+    border: 5px solid black;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 5rem;
+}
+
+.zero, .two, .four, .six, .eight {
+    background-color: rgb(107, 164, 107);
+}
+
+.one, .three, .five, .seven {
+    background-color: rgb(13, 71, 13);
 }
 
 .action {
-    background-color: green;
+    background-color: rgb(107, 164, 107);
     color: white;
     font-size: 1rem;
     border-radius: 1.5rem;
@@ -47,13 +62,15 @@ body {
     width: 70%;
     display: flex;
     justify-content: space-between;
-    /*gap: 10rem;*/
+
 }
 
 .player {
-    border: 2px solid black;
+    border: 5px solid rgb(13, 71, 13);
     border-radius: 0.75rem;
     padding: 1rem;
+    color: white;
+    background-color: black;
 }
 
 .nameForm {
@@ -83,4 +100,9 @@ body {
 
 .dialogHead {
     font-weight: 700;
+}
+
+button:hover {
+    box-shadow: 4px 8px 12px 2px rgb(0, 0, 0, 0.2);
+    color: rgb(255, 85, 0);
 }
