@@ -8,16 +8,20 @@ function gameSquareAction() {
                     this.textContent = 'X';
                     gameBoard.addMark('X', +this.id);
                     game.incRound();
+                    players.switchTurn();
+
                 } else {
                     this.textContent = 'O'
                     gameBoard.addMark('O', +this.id);
                     game.incRound();
+                    players.switchTurn();
                 }
             }
             let winner = game.checkGame()
             if (winner != undefined) {
                 heading.textContent = `${winner}'s Won!`;
                 heading.style.color = 'blue';
+                players.resetPlayerColor();
             }
         }
 }
@@ -108,6 +112,13 @@ const game = (function () {
     const playGame = () => {
         playGameButton.textContent = 'Reset';
         playGameButton.style.backgroundColor = 'red'
+
+        const playerX = players.getPlayerX();
+
+        const playerO = players.getPlayerO();
+
+        playerX.style.color = 'blue';
+        playerO.style.color = 'grey';
         
 
 
@@ -136,6 +147,11 @@ function resetGame() {
     playGameButton.style.backgroundColor = 'green';
     heading.textContent = 'Tic Tac Toe';
     heading.style.color = 'black';
+    
+    players.resetPlayerColor()
+
+    
+
     for (square of game.gameSquares) {
         square.removeEventListener('click', gameSquareAction);
     }
@@ -147,6 +163,40 @@ function resetGame() {
     
 
 }
+
+const players = (function() {
+    const players = document.querySelector('.players');
+    const playerX = document.querySelector('.playerX');
+
+
+    const playerO = document.querySelector('.playerO');
+
+    const getPlayerX = () => playerX;
+
+    const getPlayerO = () => playerO;
+    
+    const switchTurn = () => {
+            if (game.getRound() % 2 == 0) {
+                playerX.style.color = 'blue';
+                playerO.style.color = 'grey';
+            } else {
+                playerX.style.color = 'grey';
+                playerO.style.color = 'blue';
+            }
+        }
+
+    const resetPlayerColor = () => {
+        playerX.style.color = 'black';
+        playerO.style.color = 'black';
+    }
+
+    return { getPlayerX, getPlayerO, switchTurn, resetPlayerColor };
+
+    
+
+
+
+})();
 
 
     
