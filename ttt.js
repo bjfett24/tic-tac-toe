@@ -1,22 +1,50 @@
 //Gameboard is an array that is stored inside a Gameboard object
+const heading = document.querySelector('.ticTacToeHead');
+
+function gameSquareAction() {
+        if (game.getGameStatus() === undefined) {
+            if (!(this.textContent == 'X' || this.textContent == 'O')) {
+                if (game.getRound() % 2 === 0) {
+                    this.textContent = 'X';
+                    gameBoard.addMark('X', +this.id);
+                    game.incRound();
+                } else {
+                    this.textContent = 'O'
+                    gameBoard.addMark('O', +this.id);
+                    game.incRound();
+                }
+            }
+            let winner = game.checkGame()
+            if (winner != undefined) {
+                heading.textContent = `${winner}'s Won!`;
+                heading.style.color = 'blue';
+            }
+        }
+}
 
 const gameBoard = (function () {
     let board = [' ', ' ', ' ',
                  ' ', ' ', ' ',
                  ' ', ' ', ' '];
 
+    const getGameBoard = () => {
+        return board;
+    }
+
     const resetBoard = () => {
-        board = [' ', ' ', ' ',
-                 ' ', ' ', ' ',
-                 ' ', ' ', ' '];
+        for (items of board) {
+            board.pop();
+            board.unshift(' ');
+        }
+        return board
     }
 
     const addMark = (mark, location) => {
             board.splice(location, 1, mark);
-            console.log(board);
+            //console.log(board);
         }
     
-    return { addMark, board, resetBoard };
+    return { addMark, resetBoard, getGameBoard };
 })();
 
 //players must also be stored in objects
@@ -36,32 +64,43 @@ const game = (function () {
         }
     }
 
+    const getGameStatus = () => gameStatus
+
+    const getRound = () => round
+
+    const incRound = () => {
+        round++
+    }
+    
+
     const resetRounds = () => {
         round = 0;
     }
 
     const checkGame = () => {
-        if ((gameBoard.board[0] === 'X' && gameBoard.board[1] === 'X' && gameBoard.board[2] === 'X') 
-            || (gameBoard.board[3] === 'X' && gameBoard.board[4] === 'X' && gameBoard.board[5] === 'X')
-            || (gameBoard.board[6] === 'X' && gameBoard.board[7] === 'X' && gameBoard.board[8] === 'X')
-            || (gameBoard.board[0] === 'X' && gameBoard.board[3] === 'X' && gameBoard.board[6] === 'X')
-            || (gameBoard.board[1] === 'X' && gameBoard.board[4] === 'X' && gameBoard.board[7] === 'X')
-            || (gameBoard.board[2] === 'X' && gameBoard.board[5] === 'X' && gameBoard.board[8] === 'X')
-            || (gameBoard.board[0] === 'X' && gameBoard.board[4] === 'X' && gameBoard.board[8] === 'X')
-            || (gameBoard.board[2] === 'X' && gameBoard.board[4] === 'X' && gameBoard.board[6] === 'X')) {
+        let checkBoard = gameBoard.getGameBoard();
+        //console.log(checkBoard);
+        if ((checkBoard[0] === 'X' && checkBoard[1] === 'X' && checkBoard[2] === 'X') 
+            || (checkBoard[3] === 'X' && checkBoard[4] === 'X' && checkBoard[5] === 'X')
+            || (checkBoard[6] === 'X' && checkBoard[7] === 'X' && checkBoard[8] === 'X')
+            || (checkBoard[0] === 'X' && checkBoard[3] === 'X' && checkBoard[6] === 'X')
+            || (checkBoard[1] === 'X' && checkBoard[4] === 'X' && checkBoard[7] === 'X')
+            || (checkBoard[2] === 'X' && checkBoard[5] === 'X' && checkBoard[8] === 'X')
+            || (checkBoard[0] === 'X' && checkBoard[4] === 'X' && checkBoard[8] === 'X')
+            || (checkBoard[2] === 'X' && checkBoard[4] === 'X' && checkBoard[6] === 'X')) {
                 toggleGameStatus();
                 return 'X'
-            } else if ((gameBoard.board[0] === 'O' && gameBoard.board[1] === 'O' && gameBoard.board[2] === 'O') 
-                || (gameBoard.board[3] === 'O' && gameBoard.board[4] === 'O' && gameBoard.board[5] === 'O')
-                || (gameBoard.board[6] === 'O' && gameBoard.board[7] === 'O' && gameBoard.board[8] === 'O')
-                || (gameBoard.board[0] === 'O' && gameBoard.board[3] === 'O' && gameBoard.board[6] === 'O')
-                || (gameBoard.board[1] === 'O' && gameBoard.board[4] === 'O' && gameBoard.board[7] === 'O')
-                || (gameBoard.board[2] === 'O' && gameBoard.board[5] === 'O' && gameBoard.board[8] === 'O')
-                || (gameBoard.board[0] === 'O' && gameBoard.board[4] === 'O' && gameBoard.board[8] === 'O')
-                || (gameBoard.board[2] === 'O' && gameBoard.board[4] === 'O' && gameBoard.board[6] === 'O')) {
+            } else if ((checkBoard[0] === 'O' && checkBoard[1] === 'O' && checkBoard[2] === 'O') 
+                || (checkBoard[3] === 'O' && checkBoard[4] === 'O' && checkBoard[5] === 'O')
+                || (checkBoard[6] === 'O' && checkBoard[7] === 'O' && checkBoard[8] === 'O')
+                || (checkBoard[0] === 'O' && checkBoard[3] === 'O' && checkBoard[6] === 'O')
+                || (checkBoard[1] === 'O' && checkBoard[4] === 'O' && checkBoard[7] === 'O')
+                || (checkBoard[2] === 'O' && checkBoard[5] === 'O' && checkBoard[8] === 'O')
+                || (checkBoard[0] === 'O' && checkBoard[4] === 'O' && checkBoard[8] === 'O')
+                || (checkBoard[2] === 'O' && checkBoard[4] === 'O' && checkBoard[6] === 'O')) {
                     toggleGameStatus();
                     return 'O'
-            } else if (!gameBoard.board.includes(' ')) {
+            } else if (!checkBoard.includes(' ')) {
                 toggleGameStatus();
                 return 'Draw'
             } else {return undefined}
@@ -73,29 +112,11 @@ const game = (function () {
 
 
         for (square of gameSquares) {
-            square.addEventListener('click', function() {
-                if (gameStatus === undefined) {
-                    if (!(this.textContent == 'X' || this.textContent == 'O')) {
-                        if (round % 2 === 0) {
-                            this.textContent = 'X';
-                            gameBoard.addMark('X', +this.id);
-                            ++round;
-                        } else {
-                            this.textContent = 'O'
-                            gameBoard.addMark('O', +this.id);
-                            ++round;
-                        }
-                    }
-                    let winner = checkGame()
-                    if (winner != undefined) {
-                        console.log(winner);
-                    }
-                }
-        })
+            square.addEventListener('click', gameSquareAction);
 
         }
     }
-    return { playGame, checkGame, gameSquares, toggleGameStatus, resetRounds};
+    return { playGame, checkGame, gameSquares, toggleGameStatus, getGameStatus, resetRounds, getRound, incRound};
 })();
 
 
@@ -113,6 +134,12 @@ playGameButton.addEventListener('click', function() {
 function resetGame() {
     playGameButton.textContent = 'Play Game';
     playGameButton.style.backgroundColor = 'green';
+    heading.textContent = 'Tic Tac Toe';
+    heading.style.color = 'black';
+    for (square of game.gameSquares) {
+        square.removeEventListener('click', gameSquareAction);
+    }
+
     game.toggleGameStatus();
     for (square of game.gameSquares) {
         square.textContent = '';
