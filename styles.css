@@ -106,3 +106,12 @@ button:hover {
     box-shadow: 4px 8px 12px 2px rgb(0, 0, 0, 0.2);
     color: rgb(255, 85, 0);
 }
+
+.popUp {
+    background-color: antiquewhite;
+    color: rgb(13, 71, 13);
+}
+
+.doneButton {
+    background-color: rgb(107, 164, 107);
+}
